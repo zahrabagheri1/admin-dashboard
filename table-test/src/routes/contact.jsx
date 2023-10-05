@@ -1,17 +1,35 @@
-import { Form, useLoaderData } from "react-router-dom";
-import { getContact } from "../contacts";
+import { Form, useFetcher, useLoaderData } from "react-router-dom";
+import { getContact , updateContact } from "../contacts";
 
 
 export async function loader({ params }){
     const contact = await getContact(params.contactId);
+    if(!contact){
+        throw new Response("", {
+            status: 404,
+            statusText: "Not Found",
+        });
+    }
     return { contact };
+}
+
+export async function action ({request , params}){
+    let formData = await request.formData();
+    return updateContact(params.contactId, {
+        favorite: formData.get("favorite") === "true",
+    });
 }
 
 
 export default function Contact() {
     const { contact } = useLoaderData();
+    const fetcher = useFetcher();
+    let favorite = contact.favorite;
+    if (fetcher.formData){
+        favorite = fetcher.formData.get("favorite") === "true";
+    }
 
-    // const contact = {
+    // const contactdef = {
     //     first: "Pashmak",
     //     last: "Partizani",
     //     avatar: "https://placekitten.com/g/200/200",
@@ -34,7 +52,13 @@ export default function Contact() {
                     ):(
                         <i>No name</i>
                     )}{''}
-                    <Favorite contact={contact}/>
+                    {/* <Favorite contact={contact}/> */}
+
+                    <fetcher.Form method="post">
+                        <button name="favorite" value={favorite ? "false" : "true"} aria-label={ favorite ? "Remove from favorites" : "Add to favorites"}>
+                        {favorite ? "★" : "☆"}
+                        </button>
+                    </fetcher.Form>
                 </h1>
 
                 {contact.twitter && (
