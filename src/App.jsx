@@ -1,9 +1,11 @@
-// import React from 'react'
+import Login from "./features/identity/components/login";
 
 function App() {
   return (
-    <div>App</div>
-  )
+    <div>
+      <Login />
+    </div>
+  );
 }
 
-export default App
+export default App;
