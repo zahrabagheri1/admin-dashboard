@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 const Register = () => {
   const {
     register,
-    handleSubmit,
     watch,
     formState: { errors },
+    handleSubmit,
   } = useForm();
-  
+
   const onSubmit = (data) => console.log(data);
 
   return (
