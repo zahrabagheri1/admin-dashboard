@@ -2,13 +2,14 @@ import logo from "@assets/images/logo.svg";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-const register = () => {
+const Register = () => {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
+  
   const onSubmit = (data) => console.log(data);
 
   return (
@@ -113,4 +114,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default Register;

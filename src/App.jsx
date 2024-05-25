@@ -1,9 +1,11 @@
-import Login from "./features/identity/components/login";
+// import Login from "./features/identity/components/login/login";
+import Register from "./features/identity/components/register/register";
 
 function App() {
   return (
     <div>
-      <Login />
+      {/* <Login /> */}
+      <Register />
     </div>
   );
 }
