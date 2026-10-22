@@ -1,6 +1,12 @@
 import logo from "@assets/images/logo.svg";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import {
+  Link,
+  useActionData,
+  useNavigation,
+  useSubmit,
+} from "react-router-dom";
+import { httpService } from "../../../../core/http-service";
 
 const Register = () => {
   const {
@@ -10,7 +16,16 @@ const Register = () => {
     handleSubmit,
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const submitForm = useSubmit();
+  const onSubmit = (data) => {
+    // eslint-disable-next-line no-unused-vars
+    const { confirmPassword, ...userData } = data;
+    submitForm(userData, { method: "post" });
+  };
+
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state !== "idle";
+  const isSuccessOperation = useActionData();
 
   return (
     <>
@@ -102,8 +117,12 @@ const Register = () => {
                   )}
               </div>
               <div className="text-center mt-3">
-                <button type="submit" className="btn btn-lg btn-primary">
-                  ثبت نام کنید
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn btn-lg btn-primary"
+                >
+                  {isSubmitting ? "در حال انجام عملیات" : "ثبت نام کنید"}
                 </button>
               </div>
             </form>
@@ -115,3 +134,11 @@ const Register = () => {
 };
 
 export default Register;
+
+export async function registerAction({ request }) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+
+  const response = await httpService.post("/Users", data);
+  return response.status === 200;
+}

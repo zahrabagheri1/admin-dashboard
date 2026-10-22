@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from "./features/identity/components/login/login";
-import Register from "./features/identity/components/register/register";
+import Register, { registerAction } from "./features/identity/components/register/register";
 import IdentityLayout from "./layouts/identity-layout";
 
 const router = createBrowserRouter([
@@ -14,9 +14,13 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+        action: registerAction,
       },
     ],
   },
 ]);
 
 export default router;
+
+
+
